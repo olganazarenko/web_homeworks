@@ -20,31 +20,36 @@ def clean(folder: Path) -> None:
             sort_files(file, folder)
 
             if file.endswith(EXTENSIONS['images']):
-                shutil.move(os.path.join(folder), file_destination)
-                print(f'Image moved to "images": {file}')
+                file_1 = shutil.move(os.path.join(folder), file_destination)
+                files.append(file_1)
+                print(f'Image moved to "images": {files}')
             elif file.endswith(EXTENSIONS['video']):
-                shutil.move(os.path.join(folder), file_destination)
-                print(f'Video moved to "videos":{file}')
+                file_2 = shutil.move(os.path.join(folder), file_destination)
+                files.append(file_2)
+                print(f'Video moved to "videos":{files}')
             elif file.endswith(EXTENSIONS['documents']):
-                shutil.move(os.path.join(folder), file_destination)
-                print(f'Document moved to "documents":{file}')
+                file_3 = shutil.move(os.path.join(folder), file_destination)
+                files.append(file_3)
+                print(f'Document moved to "documents":{files}')
             elif file.endswith(EXTENSIONS['audio']):
-                shutil.move(os.path.join(folder), file_destination)
-                print(f'Audio moved to "audio":{file}')
+                file_4 = shutil.move(os.path.join(folder), file_destination)
+                files.append(file_4)
+                print(f'Audio moved to "audio":{files}')
             elif file.endswith(EXTENSIONS['archives']):
-                shutil.move(os.path.join(folder), file_destination)
-                print(f'Archive moved to "archives":{file}')
+                file_5 = shutil.move(os.path.join(folder), file_destination)
+                files.append(file_5)
+                print(f'Archive moved to "archives":{files}')
             sort_files(file, folder)
 
         elif file.name not in EXTENSIONS.keys():
-            subfolder = file
-            if not os.listdir(subfolder):
-                shutil.rmtree(subfolder)
+            sub_folder = file
+            if not os.listdir(sub_folder):
+                sub_folder.rmdir()
                 return
-            clean(subfolder)
+            clean(sub_folder)
 
-        for file in files:
-            thread = Thread(target=file)
+        for _ in files:
+            thread = Thread(target=clean)
             thread.start()
 
 
@@ -81,7 +86,7 @@ def archive_unpack(folder: Path, file: Path):
     print("Archive file unpacked successfully.")
 
 
-def main() -> None:
+def main():
     if len(sys.argv) < 2:
         print('Enter path to folder, which should be cleaned:')
         exit()
@@ -100,3 +105,4 @@ if __name__ == "__main__":
     main()
     print('it is done')
     exit()
+    
