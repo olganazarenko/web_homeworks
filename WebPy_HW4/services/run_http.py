@@ -6,9 +6,9 @@ import mimetypes
 from datetime import datetime
 import json
 
-
 templates_path = 'templates'
-dict: dict = {}
+static_path = 'static'
+data_: dict = {}
 
 
 class CustomTTPRequestHandler(BaseHTTPRequestHandler):
@@ -26,11 +26,10 @@ class CustomTTPRequestHandler(BaseHTTPRequestHandler):
             self.send_html_file('index.html')
         elif pr_url.path == '/message':
             self.send_html_file('message.html')
+        elif Path(static_path, pr_url.path[1:]).exists():
+            self.send_static()
         else:
-            if Path().joinpath(pr_url.path[1:]).exists():
-                self.send_static()
-            else:
-                self.send_html_file('error.html', 404)
+            self.send_html_file('error.html', 404)
 
     def send_static(self):
         self.send_response(200)
@@ -41,7 +40,7 @@ class CustomTTPRequestHandler(BaseHTTPRequestHandler):
             self.send_header('Content-type', 'text/plain')
 
         self.end_headers()
-        with open(f'{self.path}', 'rb') as file:
+        with open(os.path.join(static_path, self.path[1:]), 'rb') as file:
             self.wfile.write(file.read())
 
     def do_POST(self):
@@ -51,10 +50,10 @@ class CustomTTPRequestHandler(BaseHTTPRequestHandler):
         print(f'{data_parse=}')
         dict_file: dict = {key: value for key, value in [el.split('=') for el in data_parse.split('&')]}
         print(f'{dict_file=}')
-        dict[str(datetime.now())] = dict_file
-        print(f'{dict=}')
+        data_[str(datetime.now())] = dict_file
+        print(f'{data_=}')
         with open('storage/data.json', 'a') as outfile:
-            json.dump(dict, outfile, sort_keys=True, indent=4, separators=(',', ': '))
+            json.dump(data_, outfile, sort_keys=True, indent=4, separators=(',', ': '))
         self.send_response(302)
         self.send_header('Location', '/')
         self.end_headers()
