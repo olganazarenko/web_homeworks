@@ -10,7 +10,6 @@ port = 5000
 if __name__ == '__main__':
     http_thread: Thread = Thread(target=run_server)
     socket_server_thread: Thread = Thread(target=socket_server, args=(host, port))
-    # args = (host, port)
     http_thread.start()
     socket_server_thread.start()
     http_thread.join()

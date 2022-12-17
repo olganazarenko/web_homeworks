@@ -53,7 +53,7 @@ class CustomTTPRequestHandler(BaseHTTPRequestHandler):
         print(f'{dict_file=}')
         dict[str(datetime.now())] = dict_file
         print(f'{dict=}')
-        with open('storage/data.json', 'w') as outfile:
+        with open('storage/data.json', 'a') as outfile:
             json.dump(dict, outfile, sort_keys=True, indent=4, separators=(',', ': '))
         self.send_response(302)
         self.send_header('Location', '/')
