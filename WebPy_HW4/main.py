@@ -7,7 +7,7 @@ host = "127.0.0.1"
 port = 5000
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     http_thread: Thread = Thread(target=run_server)
     socket_server_thread: Thread = Thread(target=socket_server, args=(host, port))
     http_thread.start()
