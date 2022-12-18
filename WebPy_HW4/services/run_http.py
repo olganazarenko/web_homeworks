@@ -19,7 +19,7 @@ class CustomTTPRequestHandler(BaseHTTPRequestHandler):
         with open(os.path.join(templates_path, filename), 'rb') as fd:
             self.wfile.write(fd.read())
 
-    # os.getcwd()
+   
     def do_GET(self) -> None:
         pr_url = parse.urlparse(self.path)
         if pr_url.path == '/':
@@ -31,7 +31,7 @@ class CustomTTPRequestHandler(BaseHTTPRequestHandler):
         else:
             self.send_html_file('error.html', 404)
 
-    def send_static(self):
+    def send_static(self) -> None:
         self.send_response(200)
         types = mimetypes.guess_type(self.path)
         if types:
@@ -43,8 +43,8 @@ class CustomTTPRequestHandler(BaseHTTPRequestHandler):
         with open(os.path.join(static_path, self.path[1:]), 'rb') as file:
             self.wfile.write(file.read())
 
-    def do_POST(self):
-        data = self.rfile.read(int(self.headers['Content-Length']))
+    def do_POST(self) -> None:
+        data: bites = self.rfile.read(int(self.headers['Content-Length']))
         print(f'{data=}')
         data_parse = parse.unquote_plus(data.decode())
         print(f'{data_parse=}')
@@ -59,7 +59,7 @@ class CustomTTPRequestHandler(BaseHTTPRequestHandler):
         self.end_headers()
 
 
-def run_server():
+def run_server() -> None:
     http = HTTPServer(('127.0.0.1', 3000), CustomTTPRequestHandler)
     try:
         print('In the process...')
