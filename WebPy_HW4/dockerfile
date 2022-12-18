@@ -1,8 +1,8 @@
 FROM python:3.10
 
-COPY .. /app
-
 WORKDIR /app
+
+COPY . /app
 
 VOLUME /storage/data.json
 
